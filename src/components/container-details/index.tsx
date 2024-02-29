@@ -5,6 +5,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Button } from "@mui/material";
 
 export type ContainerData = {
   name: string;
@@ -28,6 +29,7 @@ export default function ContainerDetails(props: IContainerDetailsProps) {
             <TableCell align="right">Image</TableCell>
             <TableCell align="right">Uptime</TableCell>
             <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Bash Shell</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -42,6 +44,9 @@ export default function ContainerDetails(props: IContainerDetailsProps) {
               <TableCell align="right">{row.image}</TableCell>
               <TableCell align="right">{row.uptime}</TableCell>
               <TableCell align="right">{row.status}</TableCell>
+              <TableCell align="right">
+                <Button variant="contained">Open</Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

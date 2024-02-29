@@ -13,6 +13,11 @@ import ContainerDetails, {
 } from "../components/container-details";
 import { useEffect, useState } from "react";
 
+export type ExecutionStatus = {
+  type: "waiting" | "ready" | "running" | "stopped";
+  message: string;
+};
+
 const dummyData: ContainerData[] = [
   {
     name: "Worker1",
@@ -36,9 +41,14 @@ const dummyData: ContainerData[] = [
 
 export default function ReplicaTests() {
   const [containerData, setContainerData] = useState<ContainerData[]>([]);
+  const [executionStatus, setExecutionStatus] = useState<ExecutionStatus>({
+    type: "waiting",
+    message: "Ready for execution",
+  });
 
   useEffect(() => {
     setContainerData(dummyData);
+    setExecutionStatus({ type: "waiting", message: "Ready for execution" });
   }, []);
 
   return (
@@ -65,19 +75,39 @@ export default function ReplicaTests() {
       <Stack direction="row" sx={{ mt: 2 }} spacing={1}>
         <Typography fontSize={20}>Container Status:</Typography>
         <Typography fontSize={20} color="green" fontWeight={800}>
-          Ready to setup
+          {executionStatus.message}
         </Typography>
       </Stack>
       <Box sx={{ mt: 2 }} />
       <Stack direction="row">
         <Tooltip title="Start the containers">
-          <IconButton>
-            <PlayCircleFilledWhiteIcon fontSize="large" color="success" />
+          <IconButton disabled={executionStatus.type === "running"}>
+            <PlayCircleFilledWhiteIcon
+              fontSize="large"
+              color={
+                executionStatus.type === "running" ? "disabled" : "success"
+              }
+            />
           </IconButton>
         </Tooltip>
         <Tooltip title="Stop the containers">
-          <IconButton>
-            <StopCircleIcon fontSize="large" color="error" />
+          <IconButton
+            disabled={
+              executionStatus.type === "waiting" ||
+              executionStatus.type === "ready" ||
+              executionStatus.type === "stopped"
+            }
+          >
+            <StopCircleIcon
+              fontSize="large"
+              color={
+                executionStatus.type === "waiting" ||
+                executionStatus.type === "ready" ||
+                executionStatus.type === "stopped"
+                  ? "disabled"
+                  : "error"
+              }
+            />
           </IconButton>
         </Tooltip>
       </Stack>

@@ -16,6 +16,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PannelItem from "../panel-item";
 import MenuIcon from "@mui/icons-material/Menu";
 import BugReportIcon from "@mui/icons-material/BugReport";
+import ScienceIcon from "@mui/icons-material/Science";
+import { useNavigate } from "react-router-dom";
 
 interface sidePannelProps {
   open?: boolean;
@@ -28,6 +30,8 @@ const SidePannel: React.FC<sidePannelProps> = ({
   handleDrawerClose,
   handleDrawerOpen,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <Box sx={ContainerStyles}>
       <CssBaseline />
@@ -57,10 +61,20 @@ const SidePannel: React.FC<sidePannelProps> = ({
           height="100vh"
         >
           <List>
-            <PannelItem text="Information" open={open} Icon={BugReportIcon} />
-            {/* <PannelItem text="Analytics" open={open} Icon={AutoGraphOutlinedIcon} />
-            <PannelItem text="Prenumeration" open={open} Icon={WorkspacePremiumIcon} />
-            <PannelItem text="inställningar" open={open} Icon={GroupsIcon} /> */}
+            <PannelItem
+              text="Information"
+              open={open}
+              Icon={BugReportIcon}
+              handleClick={() => navigate("")}
+            />
+            <PannelItem
+              text="Tests"
+              open={open}
+              Icon={ScienceIcon}
+              handleClick={() => navigate("/test-suite")}
+            />
+            {/* <PannelItem text="Prenumeration" open={open} Icon={WorkspacePremiumIcon} /> */}
+            {/* <PannelItem text="inställningar" open={open} Icon={GroupsIcon} /> */}
           </List>
         </Box>
       </Drawer>

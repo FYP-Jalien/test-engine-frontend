@@ -15,11 +15,17 @@ interface Props {
   open?: boolean;
   text: string;
   Icon: React.ComponentType;
+  handleClick: () => void;
 }
 
-const PannelItem: React.FC<Props> = ({ text, open, Icon }) => {
+const PannelItem: React.FC<Props> = ({ text, open, Icon, handleClick }) => {
   return (
-    <ListItem key={text} disablePadding sx={WrapperStyles}>
+    <ListItem
+      key={text}
+      disablePadding
+      sx={WrapperStyles}
+      onClick={handleClick}
+    >
       <ListItemButton
         sx={{
           ...ListItemButtonStyles,
