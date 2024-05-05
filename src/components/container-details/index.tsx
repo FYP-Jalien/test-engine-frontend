@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 
 export type ContainerData = {
-  name: string;
+  container_name: string;
   image: string;
   uptime: string;
   status: string;
@@ -25,7 +25,7 @@ export default function ContainerDetails(props: IContainerDetailsProps) {
       <Table sx={{ minWidth: 800 }} aria-label="simple table">
         <TableHead sx={{ bgcolor: "#EBFFEB" }}>
           <TableRow>
-            <TableCell>Container</TableCell>
+            <TableCell>Container ID</TableCell>
             <TableCell align="right">Image</TableCell>
             <TableCell align="right">Uptime</TableCell>
             <TableCell align="right">Status</TableCell>
@@ -35,11 +35,11 @@ export default function ContainerDetails(props: IContainerDetailsProps) {
         <TableBody>
           {data.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.container_name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.container_name}
               </TableCell>
               <TableCell align="right">{row.image}</TableCell>
               <TableCell align="right">{row.uptime}</TableCell>

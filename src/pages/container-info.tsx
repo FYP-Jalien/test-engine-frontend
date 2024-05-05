@@ -12,32 +12,13 @@ import ContainerDetails, {
   ContainerData,
 } from "../components/container-details";
 import { useEffect, useState } from "react";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import api from "../api/api";
 
 export type ExecutionStatus = {
   type: "waiting" | "ready" | "running" | "stopped";
   message: string;
 };
-
-const dummyData: ContainerData[] = [
-  {
-    name: "Worker1",
-    image: "worker",
-    uptime: "2h",
-    status: "Running",
-  },
-  {
-    name: "Worker2",
-    image: "worker",
-    uptime: "2h",
-    status: "Running",
-  },
-  {
-    name: "scheduler",
-    image: "htcondor",
-    uptime: "3h",
-    status: "running",
-  },
-];
 
 export default function ReplicaTests() {
   const [containerData, setContainerData] = useState<ContainerData[]>([]);
@@ -46,8 +27,17 @@ export default function ReplicaTests() {
     message: "Ready for execution",
   });
 
+  const handleRefresh = async () => {
+    try {
+      const response = await api.get("/container/status");
+      setContainerData(response.data["container_information"]);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setContainerData(dummyData);
     setExecutionStatus({ type: "waiting", message: "Ready for execution" });
   }, []);
 
@@ -110,12 +100,25 @@ export default function ReplicaTests() {
             />
           </IconButton>
         </Tooltip>
+        <Tooltip title="Refresh">
+          <IconButton onClick={handleRefresh}>
+            <RefreshIcon fontSize="large" />
+          </IconButton>
+        </Tooltip>
       </Stack>
 
       <Box sx={{ mt: 2 }} />
-      <Typography variant="body2" fontSize={20} fontWeight={800}>
-        Container Status
-      </Typography>
+      <Stack direction="row">
+        <Typography
+          variant="body2"
+          fontSize={20}
+          fontWeight={800}
+          marginRight={4}
+        >
+          Container Status
+        </Typography>
+      </Stack>
+
       <Box sx={{ mt: 2 }} />
       <ContainerDetails data={containerData} />
       <Box sx={{ mt: 2 }} />
