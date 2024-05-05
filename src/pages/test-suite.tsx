@@ -14,9 +14,11 @@ import api from "../api/api";
 import { toast } from "react-toastify";
 
 export type TestDetails = {
+  id: string;
   name: string;
-  description: string;
-  constraint: string;
+  status: string;
+  level: string;
+  message: string;
 };
 
 export default function TestSuite() {
@@ -35,6 +37,17 @@ export default function TestSuite() {
     }
   };
 
+  const getTestSummary = async () => {
+    try {
+      const response = await api.get("/tests/summary");
+      setAllTestDetails(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Error getting the test summary", error);
+      toast.error("Error getting the test summary");
+    }
+  };
+
   const handleStop = async () => {
     // if (!testSuitePID) {
     //   toast.info("Test suite is not running at the moment.");
@@ -49,13 +62,10 @@ export default function TestSuite() {
   };
 
   useEffect(() => {
-    setAllTestDetails([
-      {
-        name: "test1",
-        description: "test1 description",
-        constraint: "test1 constraint",
-      },
-    ]);
+    const intervalId = setInterval(getTestSummary, 1000);
+
+    // Cleanup function to clear the interval on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
