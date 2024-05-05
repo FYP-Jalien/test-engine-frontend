@@ -6,6 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
+import api from "../../api/api";
 
 export type ContainerData = {
   container_name: string;
@@ -17,6 +18,14 @@ export type ContainerData = {
 export interface IContainerDetailsProps {
   data: ContainerData[];
 }
+
+const handleBashClick = async (containerName: string) => {
+  try {
+    await api.get(`/container/terminal/${containerName}`);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export default function ContainerDetails(props: IContainerDetailsProps) {
   const { data } = props;
@@ -45,7 +54,12 @@ export default function ContainerDetails(props: IContainerDetailsProps) {
               <TableCell align="right">{row.uptime}</TableCell>
               <TableCell align="right">{row.status}</TableCell>
               <TableCell align="right">
-                <Button variant="contained">Open</Button>
+                <Button
+                  onClick={() => handleBashClick(row.container_name)}
+                  variant="contained"
+                >
+                  Open
+                </Button>
               </TableCell>
             </TableRow>
           ))}
