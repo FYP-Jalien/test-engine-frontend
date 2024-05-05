@@ -10,11 +10,23 @@ import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import TestInformation from "../components/test-details";
 import { useEffect, useState } from "react";
+import api from "../api/api";
+import { toast } from "react-toastify";
 
 export type TestDetails = {
   name: string;
   description: string;
   constraint: string;
+};
+
+const handleStart = async () => {
+  try {
+    await api.get("/tests");
+    toast.info("Starting the test suite.");
+  } catch (error) {
+    console.log(error);
+    toast.error("Starting test suite faild.");
+  }
 };
 
 export default function TestSuite() {
@@ -29,6 +41,7 @@ export default function TestSuite() {
       },
     ]);
   }, []);
+
   return (
     <Box>
       <Typography variant="body2" fontSize={36} fontWeight="bold">
@@ -45,7 +58,7 @@ export default function TestSuite() {
       <Box sx={{ mt: 2 }} />
       <Stack direction="row">
         <Tooltip title="Start the test process">
-          <IconButton>
+          <IconButton onClick={handleStart}>
             <PlayCircleFilledWhiteIcon fontSize="large" color="success" />
           </IconButton>
         </Tooltip>
