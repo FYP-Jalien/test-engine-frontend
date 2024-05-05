@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 import api from "../../api/api";
+import { toast } from "react-toastify";
 
 export type ContainerData = {
   container_name: string;
@@ -22,8 +23,10 @@ export interface IContainerDetailsProps {
 const handleBashClick = async (containerName: string) => {
   try {
     await api.get(`/container/terminal/${containerName}`);
+    toast.success("Opening the bash shell. Check for new terminal window");
   } catch (error) {
     console.log(error);
+    toast.error("Failed to open the bash shell.");
   }
 };
 
