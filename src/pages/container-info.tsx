@@ -27,12 +27,11 @@ export default function ReplicaTests() {
     message: "Ready for execution",
   });
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     try {
-      api.get("/container/status").then((response) => {
-        setContainerData(response.data["container_information"]);
-        console.log(response.data);
-      });
+      const response = await api.get("/container/status");
+      setContainerData(response.data["container_information"]);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
