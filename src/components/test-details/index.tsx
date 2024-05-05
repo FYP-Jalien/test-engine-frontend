@@ -21,8 +21,8 @@ export default function TestInformation(props: ITestDetailsProps) {
         <TableHead sx={{ bgcolor: "#EBFFEB" }}>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell align="center">Description</TableCell>
-            <TableCell align="center">Constraint</TableCell>
+            <TableCell align="center">Level</TableCell>
+            <TableCell align="center">Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -34,8 +34,8 @@ export default function TestInformation(props: ITestDetailsProps) {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="center">{row.description}</TableCell>
-              <TableCell align="center">{row.constraint}</TableCell>
+              <TableCell align="center">{row.level}</TableCell>
+              <TableCell align="center">{row.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>
