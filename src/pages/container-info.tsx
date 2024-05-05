@@ -28,10 +28,14 @@ export default function ReplicaTests() {
   });
 
   const handleRefresh = () => {
-    api.get("/container/status").then((response) => {
-      setContainerData(response.data["container_information"]);
-      console.log(response.data);
-    });
+    try {
+      api.get("/container/status").then((response) => {
+        setContainerData(response.data["container_information"]);
+        console.log(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
