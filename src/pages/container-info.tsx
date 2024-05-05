@@ -14,6 +14,7 @@ import ContainerDetails, {
 import { useEffect, useState } from "react";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import api from "../api/api";
+import { toast } from "react-toastify";
 
 export type ExecutionStatus = {
   type: "waiting" | "ready" | "running" | "stopped";
@@ -50,8 +51,10 @@ export default function ReplicaTests() {
   const handleContainerStart = async () => {
     try {
       await api.get("/container/up");
+      toast.success("Starting the containers.");
     } catch (error) {
       console.log(error);
+      toast.error("Failed to start the containers.");
     }
   };
 
@@ -59,8 +62,10 @@ export default function ReplicaTests() {
   const handleContainerStop = async () => {
     try {
       await api.get("/container/down");
+      toast.success("Stopping the containers.");
     } catch (error) {
       console.log(error);
+      toast.error("Failed to stop the containers.");
     }
   };
 
