@@ -27,19 +27,49 @@ export default function ReplicaTests() {
     message: "Ready for execution",
   });
 
+  // Updating the execution status based on the container data.
+  useEffect(() => {
+    containerData.length > 0
+      ? setExecutionStatus({ type: "running", message: "Running" })
+      : setExecutionStatus({ type: "stopped", message: "Stopped" });
+
+    console.log("Container data : ", containerData);
+  }, [containerData]);
+
+  // Fetching the container status from the server.
   const handleRefresh = async () => {
     try {
       const response = await api.get("/container/status");
       setContainerData(response.data["container_information"]);
-      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Starting the containers.
+  const handleContainerStart = async () => {
+    try {
+      await api.get("/container/up");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Stopping the containers.
+  const handleContainerStop = async () => {
+    try {
+      await api.get("/container/down");
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    setExecutionStatus({ type: "waiting", message: "Ready for execution" });
-  }, []);
+    const intervalId = setInterval(handleRefresh, 1000);
+
+    // Cleanup function to clear the interval on unmount
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array, runs only on mount
 
   return (
     <Box
@@ -71,7 +101,10 @@ export default function ReplicaTests() {
       <Box sx={{ mt: 2 }} />
       <Stack direction="row">
         <Tooltip title="Start the containers">
-          <IconButton disabled={executionStatus.type === "running"}>
+          <IconButton
+            disabled={executionStatus.type === "running"}
+            onClick={handleContainerStart}
+          >
             <PlayCircleFilledWhiteIcon
               fontSize="large"
               color={
@@ -87,6 +120,7 @@ export default function ReplicaTests() {
               executionStatus.type === "ready" ||
               executionStatus.type === "stopped"
             }
+            onClick={handleContainerStop}
           >
             <StopCircleIcon
               fontSize="large"
